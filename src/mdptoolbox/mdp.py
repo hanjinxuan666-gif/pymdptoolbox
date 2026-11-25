@@ -640,11 +640,11 @@ class PolicyIteration(MDP):
                 "'policy0' must a vector with length S."
             # reshape the policy to be a vector
             policy0 = policy0.reshape(self.S)
-            # The policy can only contain integers between 0 and S-1
-            msg = "'policy0' must be a vector of integers between 0 and S-1."
+            # Each entry is an action index.
+            msg = "'policy0' must be a vector of integers between 0 and A-1."
             assert not _np.mod(policy0, 1).any(), msg
             assert (policy0 >= 0).all(), msg
-            assert (policy0 < self.S).all(), msg
+            assert (policy0 < self.A).all(), msg
             self.policy = policy0
         # set the initial values to zero
         self.V = _np.zeros(self.S)

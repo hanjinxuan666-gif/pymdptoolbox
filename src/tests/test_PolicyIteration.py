@@ -24,6 +24,19 @@ def test_PolicyIteration_init_policy0_forest():
     p = np.array([0, 1, 0])
     assert (sdp.policy == p).all()
 
+def test_PolicyIteration_init_policy0_more_actions_than_states():
+    transitions = np.array([np.eye(2)] * 3)
+    rewards = np.array([[0, 1, 2], [0, 1, 2]])
+    sdp = mdptoolbox.mdp.PolicyIteration(transitions, rewards, 0.9,
+                                         policy0=[2, 2])
+    sdp.run()
+    assert sdp.policy == (2, 2)
+
+def test_PolicyIteration_init_policy0_out_of_range_action():
+    with np.testing.assert_raises(AssertionError):
+        mdptoolbox.mdp.PolicyIteration(P_forest, R_forest, 0.9,
+                                       policy0=[0, 1, 2])
+
 def test_PolicyIteration_computePpolicyPRpolicy_forest():
     sdp = mdptoolbox.mdp.PolicyIteration(P_forest, R_forest, 0.9)
     P1 = np.matrix('0.1, 0.9, 0; 1, 0, 0; 0.1, 0, 0.9').A
